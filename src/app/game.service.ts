@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Block } from './block';
+import { DynamicColorService } from './dynamic-color.service';
 
 const MAX_ROW = 4;
 const MAX_COLUMN = 4;
@@ -10,16 +11,13 @@ export class GameService {
 
     public blocks: Block[][];
 
-    constructor() {
+    constructor(private dynamicColor: DynamicColorService) {
         this.blocks = [];
     }
 
     public start() {
         this.initialise();
-        const row = this.getRandomInRange(MAX_ROW);
-        const col = this.getRandomInRange(MAX_ROW);
-        const value = this.getRandomInRange(MAX_NUM);
-        this.blocks[row][col].value = value === 0 ? 2 : 4;
+        this.fillRandomPosition();
     }
 
     playDown(): void {
@@ -31,6 +29,7 @@ export class GameService {
                     if (this.blocks[temp_row + 1][j].value === 0
                         || this.blocks[temp_row][j].value === this.blocks[temp_row + 1][j].value) {
                         this.blocks[temp_row + 1][j].value += this.blocks[temp_row][j].value;
+                        this.updateColor(this.blocks[temp_row + 1][j]);
                         this.blocks[temp_row][j].value = 0;
                         temp_row++;
                         played = true;
@@ -54,6 +53,7 @@ export class GameService {
                     if (this.blocks[temp_row - 1][j].value === 0
                         || this.blocks[temp_row][j].value === this.blocks[temp_row - 1][j].value) {
                         this.blocks[temp_row - 1][j].value += this.blocks[temp_row][j].value;
+                        this.updateColor(this.blocks[temp_row - 1][j]);
                         this.blocks[temp_row][j].value = 0;
                         temp_row--;
                         played = true;
@@ -77,6 +77,7 @@ export class GameService {
                     if (this.blocks[i][temp_col - 1].value === 0
                         || this.blocks[i][temp_col - 1].value === this.blocks[i][temp_col].value) {
                         this.blocks[i][temp_col - 1].value += this.blocks[i][temp_col].value;
+                        this.updateColor(this.blocks[i][temp_col - 1]);
                         this.blocks[i][temp_col].value = 0;
                         temp_col--;
                         played = true;
@@ -100,6 +101,7 @@ export class GameService {
                     if (this.blocks[i][temp_col + 1].value === 0
                         || this.blocks[i][temp_col + 1].value === this.blocks[i][temp_col].value) {
                         this.blocks[i][temp_col + 1].value += this.blocks[i][temp_col].value;
+                        this.updateColor(this.blocks[i][temp_col + 1]);
                         this.blocks[i][temp_col].value = 0;
                         temp_col++;
                         played = true;
@@ -120,6 +122,7 @@ export class GameService {
                 if (this.blocks[i][j].value === 0) {
                     const value = this.getRandomInRange(MAX_NUM);
                     this.blocks[i][j].value = value === 0 ? 2 : 4;
+                    this.updateColor(this.blocks[i][j]);
                     return;
                 }
             }
@@ -137,6 +140,10 @@ export class GameService {
 
     private getRandomInRange(range: number): number {
         return Math.floor(Math.random() * range);
+    }
+
+    private updateColor(block: Block) {
+        block.color = this.dynamicColor.getColorForValue(block.value);
     }
 
 }
