@@ -1,4 +1,4 @@
-<mat-card *ngIf="block.value != 0; else blank" [ngStyle]="{'background-color':block.color}">
+<mat-card *ngIf="block.value != 0; else blank" [ngStyle]="{'background-color':block.color}" [@blockState]="block.state">
     <mat-card-content>
         {{block.value}}
     </mat-card-content>

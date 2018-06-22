@@ -123,6 +123,10 @@ export class GameService {
                     const value = this.getRandomInRange(MAX_NUM);
                     this.blocks[i][j].value = value === 0 ? 2 : 4;
                     this.updateColor(this.blocks[i][j]);
+                    this.blocks[i][j].state = 'inactive';
+                    setTimeout(() => {
+                        this.blocks[i][j].state = 'active';
+                    }, 10);
                     return;
                 }
             }
