@@ -1,0 +1,9 @@
+<mat-card *ngIf="block.value != 0; else blank" [ngStyle]="{'background-color':color}">
+    <mat-card-content>
+        {{block.value}}
+    </mat-card-content>
+</mat-card>
+<ng-template #blank>
+    <div class="myDiv">
+    </div>
+</ng-template>

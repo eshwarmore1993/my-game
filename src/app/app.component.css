@@ -1,0 +1,13 @@
+.container{
+    justify-content: center;
+    display: flex;
+    padding-top: 4em;
+}
+
+.block {
+    border-style: solid;
+    border-width: thick;
+    border-color: lightgray;
+    padding: 0.2em;
+    width: 5em;
+}
