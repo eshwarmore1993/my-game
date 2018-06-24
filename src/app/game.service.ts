@@ -117,20 +117,18 @@ export class GameService {
     }
 
     private fillRandomPosition() {
-        for (let i = 0; i < MAX_ROW; i++) {
-            for (let j = 0; j < MAX_COLUMN; j++) {
-                if (this.blocks[i][j].value === 0) {
-                    const value = this.getRandomInRange(MAX_NUM);
-                    this.blocks[i][j].value = value === 0 ? 2 : 4;
-                    this.updateColor(this.blocks[i][j]);
-                    this.blocks[i][j].state = 'inactive';
-                    setTimeout(() => {
-                        this.blocks[i][j].state = 'active';
-                    }, 10);
-                    return;
-                }
-            }
+        let row = this.getRandomInRange(MAX_ROW);
+        let col = this.getRandomInRange(MAX_COLUMN);
+        while (this.blocks[row][col].value !== 0) {
+            row = this.getRandomInRange(MAX_ROW);
+            col = this.getRandomInRange(MAX_COLUMN);
         }
+        this.blocks[row][col].value = this.getRandomInRange(MAX_NUM) === 0 ? 2 : 4;
+        this.blocks[row][col].state = 'inactive';
+        this.updateColor(this.blocks[row][col]);
+        setTimeout(() => {
+            this.blocks[row][col].state = 'active';
+        }, 10);
     }
 
     private initialise() {
